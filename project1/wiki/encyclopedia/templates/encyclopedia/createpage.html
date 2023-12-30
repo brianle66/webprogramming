@@ -1,0 +1,12 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    Create New Encyclopedia
+{% endblock %}
+
+{% block body %}
+    <form action="newpage" method="POST">
+        <textarea name="title" rows="4" cols="50" id="1" placeholder="Title"></textarea>
+        <textarea name="content" rows="4" cols="50" id="1"  placeholder="Content"></textarea>
+    </form>
+{% endblock %}
