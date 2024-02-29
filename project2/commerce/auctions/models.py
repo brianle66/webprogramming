@@ -9,7 +9,7 @@ class Team(models.Model):
     teamName = models.CharField(max_length = 64)
     teamCode = models.CharField(max_length = 3)
     def __str__(self) -> str:
-        return f'Team {self.teamName} - {self.teamCode}'
+        return f'{self.teamName}'
     
 class Listing(models.Model):
     title = models.CharField(max_length = 64)
