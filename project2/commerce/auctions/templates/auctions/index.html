@@ -2,6 +2,27 @@
 
 {% block body %}
     <h2>Active Listings</h2>
+    <form action="{% url 'byTeam' %}" method="POST">
+        {%csrf_token%}
+        <label for="team">Team</label>
+        <select name="teamName" id="team">
+            {% for t in team %}
+                <option value="{{t}}">{{t}}</option>
+            {%endfor%}
+        </select>
+        <button type="submit" class="btn-success">Search</button>
+    </form>
 
-    TODO
+    <div class="row mx-3">
+        {%for item in active_listing%}
+            <div class="card mx-3" style="width: 18rem;">
+                <img src="{{item.imgURL}}" class="card-img-top" alt="{{item.title}}">
+                <div class="card-body">
+                    <h5 class="{{item.title}}">{{item.title}}</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <a href="" class="btn btn-primary">View More</a>
+                </div>
+            </div>
+        {%endfor%}
+    </div>
 {% endblock %}

@@ -8,7 +8,23 @@ from .models import User, Team, Listing
 
 
 def index(request):
-    return render(request, "auctions/index.html")
+    active_listing = Listing.objects.filter(isActive = True)
+    allTeam = Team.objects.all()
+    return render(request, "auctions/index.html",{
+        'active_listing': active_listing,
+        'team' : allTeam
+    })
+
+def active_listing_byteam(request):
+    if request.method == 'POST':
+        searchTeam = request.POST['teamName']
+        team = Team.objects.get(teamName = searchTeam)
+        active_listing = Listing.objects.filter(isActive = True, team = team)
+        allTeam = Team.objects.all()
+        return render(request, "auctions/index.html",{
+            'active_listing': active_listing,
+            'team' : allTeam
+    })
 
 def createlisting(request):
     if request.method == 'GET':
