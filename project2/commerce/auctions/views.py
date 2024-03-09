@@ -48,6 +48,11 @@ def createlisting(request):
         new_listing.save()
         return HttpResponseRedirect(reverse(index))
 
+def listing(request, id):
+    item = Listing.objects.get(pk = id)
+    return render(request, 'auctions/listing.html',{
+        'item' : item
+        })
 
 def login_view(request):
     if request.method == "POST":

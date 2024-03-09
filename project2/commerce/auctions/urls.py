@@ -8,5 +8,6 @@ urlpatterns = [
     path("logout", views.logout_view, name="logout"),
     path("register", views.register, name="register"),
     path('createlisting', views.createlisting, name = 'create'),
-    path('byTeam', views.active_listing_byteam, name='byTeam')
+    path('byTeam', views.active_listing_byteam, name='byTeam'),
+    path('listing/<int:id>', views.listing, name='listing')
 ]

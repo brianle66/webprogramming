@@ -18,6 +18,7 @@ class Listing(models.Model):
     team = models.ForeignKey(Team, on_delete = models.CASCADE,blank = True, null = True, related_name = 'cars')
     imgURL = models.CharField(max_length = 1000)
     isActive = models.BooleanField(default = True)
+    watchList = models.ManyToManyField(User, blank=True, null=True, related_name='userwatchlist')
 
     def __str__(self) -> str:
         return f'Name: {self.title}'

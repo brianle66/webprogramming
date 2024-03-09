@@ -1,0 +1,8 @@
+{% extends "auctions/layout.html" %}
+
+{%block body%}
+    <h1>Car: {{item.title}}</h1>
+    <img src="{{item.imgURL}}" alt="{{item.title}}" height="300px">
+    <p>Owner: {{item.owner}}</p>
+    <h3>${{item.price}}</h6>
+{%endblock%}
