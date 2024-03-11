@@ -15,6 +15,25 @@ def index(request):
         'team' : allTeam
     })
 
+def removewatchList(request, id):
+    item = Listing.objects.get(pk = id)
+    item.watchList.remove(request.user)
+    return HttpResponseRedirect(reverse('listing', args=(id, )))
+
+
+def addwatchList(request, id):
+    item = Listing.objects.get(pk = id)
+    item.watchList.add(request.user)
+    return HttpResponseRedirect(reverse("listing", args=(id, )))
+
+def listing(request, id):
+    item = Listing.objects.get(pk = id)
+    userisWatching = request.user in item.watchList.all()
+    return render(request, 'auctions/listing.html',{
+        'item' : item,
+        'userisWatching': userisWatching
+        })
+
 def active_listing_byteam(request):
     if request.method == 'POST':
         searchTeam = request.POST['teamName']
@@ -48,11 +67,7 @@ def createlisting(request):
         new_listing.save()
         return HttpResponseRedirect(reverse(index))
 
-def listing(request, id):
-    item = Listing.objects.get(pk = id)
-    return render(request, 'auctions/listing.html',{
-        'item' : item
-        })
+
 
 def login_view(request):
     if request.method == "POST":
