@@ -1,0 +1,18 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Active Listings</h2>
+
+    <div class="row mx-3">
+        {%for item in items%}
+            <div class="card mx-3" style="width: 18rem;">
+                <img src="{{item.imgURL}}" class="card-img-top" alt="{{item.title}}">
+                <div class="card-body">
+                    <h5 class="{{item.title}}">{{item.title}}</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <a href="{%url 'listing' item.id%}" class="btn btn-primary">View More</a>
+                </div>
+            </div>
+        {%endfor%}
+    </div>
+{% endblock %}

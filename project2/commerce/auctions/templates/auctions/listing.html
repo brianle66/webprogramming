@@ -23,4 +23,13 @@
     <p>Owner: {{item.owner}}</p>
     <h3>${{item.price}}</h6>
 
+    <h2>Comments</h2>
+    <br/>
+    {% if user.is_authenticated%}
+        <form action="{%url 'comment' id=item.id%}" method="POST">
+            {%csrf_token%}
+            <input type="text" name="newcomment" placeholder="Comment here">
+            <button type="submit" class="btn btn-warning">Add Comment</button>
+        </form>
+    {%endif%}
 {%endblock%}

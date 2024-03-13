@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User, Team, Listing
+from .models import User, Team, Listing, Comment
 
 
 def index(request):
@@ -13,6 +13,29 @@ def index(request):
     return render(request, "auctions/index.html",{
         'active_listing': active_listing,
         'team' : allTeam
+    })
+
+def comment(request,id):
+    currentuser = request.user
+    item = Listing.objects.get(pk = id)
+    message = request.POST['comment']
+
+    newcomment = Comment(
+        author = currentuser,
+        listing = item,
+        message = message
+    )
+    
+    newcomment.save()
+
+    return HttpResponseRedirect(reverse('listing', args=(id, )))
+
+
+def watchList(request):
+    currentuser = request.user
+    currentuser_watchlist_items = currentuser.userwatchlist.all()  # Use .all() to get all related objects
+    return render(request, 'auctions/watchlist.html',{
+        'items' : currentuser_watchlist_items
     })
 
 def removewatchList(request, id):
@@ -29,9 +52,11 @@ def addwatchList(request, id):
 def listing(request, id):
     item = Listing.objects.get(pk = id)
     userisWatching = request.user in item.watchList.all()
+    allcomment = Comment.objects.filter(listing=item)
     return render(request, 'auctions/listing.html',{
         'item' : item,
-        'userisWatching': userisWatching
+        'userisWatching': userisWatching,
+        'allcomment' : allcomment
         })
 
 def active_listing_byteam(request):

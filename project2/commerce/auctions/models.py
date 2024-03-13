@@ -23,3 +23,10 @@ class Listing(models.Model):
     def __str__(self) -> str:
         return f'Name: {self.title}'
 
+class Comment(models.Model):
+    author = models.ForeignKey(User, on_delete = models.CASCADE,blank = True, null = True, related_name = 'authorComment')
+    comment = models.CharField(max_length = 300)
+    listing = models.ForeignKey(Listing, on_delete = models.CASCADE,blank = True, null = True, related_name = 'listingComment')
+
+    def __str__(self) -> str:
+        return f'{self.author} comment on {self.listing}'
