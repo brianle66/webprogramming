@@ -18,12 +18,12 @@ def index(request):
 def comment(request,id):
     currentuser = request.user
     item = Listing.objects.get(pk = id)
-    message = request.POST['comment']
+    message = request.POST['newcomment']
 
     newcomment = Comment(
         author = currentuser,
         listing = item,
-        message = message
+        comment = message
     )
     
     newcomment.save()
@@ -33,9 +33,11 @@ def comment(request,id):
 
 def watchList(request):
     currentuser = request.user
-    currentuser_watchlist_items = currentuser.userwatchlist.all()  # Use .all() to get all related objects
+    currentuser_watchlist_items = currentuser.userwatchlist.all()
+    WLquantity = len(currentuser_watchlist_items)
     return render(request, 'auctions/watchlist.html',{
-        'items' : currentuser_watchlist_items
+        'items' : currentuser_watchlist_items,
+        'wlquanity' : WLquantity
     })
 
 def removewatchList(request, id):
