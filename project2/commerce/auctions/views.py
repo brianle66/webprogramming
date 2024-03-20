@@ -34,11 +34,12 @@ def comment(request,id):
 def watchList(request):
     currentuser = request.user
     currentuser_watchlist_items = currentuser.userwatchlist.all()
-    WLquantity = len(currentuser_watchlist_items)
+    watchlist_quantity = currentuser_watchlist_items.count()
     return render(request, 'auctions/watchlist.html',{
         'items' : currentuser_watchlist_items,
-        'wlquanity' : WLquantity
+        'watchlist_quantity' : watchlist_quantity
     })
+
 
 def removewatchList(request, id):
     item = Listing.objects.get(pk = id)
