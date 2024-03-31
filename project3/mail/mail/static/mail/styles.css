@@ -9,3 +9,7 @@ textarea {
 .unread{
     background-color: white;
 }
+
+button {
+    margin: 10px;
+  }
