@@ -1,15 +1,25 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse
-
-from .models import User
-
+from .models import Post, User
 
 def index(request):
-    return render(request, "network/index.html")
+    user = request.user
+    allposts = user.posts.all()
+    return render(request, "network/index.html",{
+        'allposts' : allposts
+    })
 
+def newpost(request):
+    if request.method == 'POST':
+        content = request.POST['content']
+        user = request.user
+        post = Post(content=content, author = user)
+        post.save()
+
+        return HttpResponseRedirect(reverse(index))
 
 def login_view(request):
     if request.method == "POST":
