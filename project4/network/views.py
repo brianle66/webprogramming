@@ -15,8 +15,8 @@ def index(request):
 def newpost(request):
     if request.method == 'POST':
         content = request.POST['content']
-        user = request.user
-        post = Post(content=content, author = user)
+        author = request.user
+        post = Post(content=content, author = author)
         post.save()
 
         return HttpResponseRedirect(reverse(index))
