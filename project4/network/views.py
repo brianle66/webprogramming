@@ -7,10 +7,20 @@ from .models import Post, User
 
 def index(request):
     user = request.user
-    allposts = user.posts.all()
+    all_posts = user.posts.all().order_by('-id')
     return render(request, "network/index.html",{
-        'allposts' : allposts
+        'allposts' : all_posts
     })
+
+def edit_post(request, id):
+    if request.method == 'GET':
+        return render(request, 'network/index.html')
+    if request.method == 'POST':
+        current_post = request.user.posts.get(pk=id)
+        new_content = request.POST['newcontent']
+        current_post.content = new_content
+        current_post.save()
+        return HttpResponseRedirect(reverse(index))
 
 def newpost(request):
     if request.method == 'POST':
