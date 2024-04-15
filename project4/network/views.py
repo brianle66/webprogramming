@@ -1,9 +1,10 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from .models import Post, User
+import json
 
 def index(request):
     user = request.user
@@ -12,15 +13,18 @@ def index(request):
         'allposts' : all_posts
     })
 
+
 def edit_post(request, id):
+    current_post = Post.objects.get(pk=id)
     if request.method == 'GET':
-        return render(request, 'network/index.html')
-    if request.method == 'POST':
-        current_post = request.user.posts.get(pk=id)
-        new_content = request.POST['newcontent']
-        current_post.content = new_content
+        return render(request, 'network/editpost.html', {
+            'post': current_post
+        })
+    elif request.method == 'POST':
+        current_post.content = request.POST['newcontent']
         current_post.save()
-        return HttpResponseRedirect(reverse(index))
+        return HttpResponseRedirect(reverse('index'))
+
 
 def newpost(request):
     if request.method == 'POST':

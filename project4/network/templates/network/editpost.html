@@ -1,0 +1,15 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+    <h1>Edit Post</h1>
+    <form method="POST">
+    {%csrf_token%}
+        <div class="mb-3">
+          <label class="form-label">Current Content</label>
+          <input type="content" class="form-control" name="newcontent" value="{{post.content}}">
+          <div id="emailHelp" class="form-text">Created {{post.date_posted}}</div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+{% endblock %}
