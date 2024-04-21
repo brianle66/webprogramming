@@ -3,16 +3,64 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from .models import Post, User
+from .models import Post, User, Follow
+from django.core.paginator import Paginator
 import json
-
 def index(request):
-    user = request.user
-    all_posts = user.posts.all().order_by('-id')
+    all_posts = Post.objects.all().order_by('-id')
+    paginator = Paginator(all_posts,5)
+    page_number = request.GET.get('page')
+    posts_per_page = paginator.get_page(page_number)
     return render(request, "network/index.html",{
-        'allposts' : all_posts
+        'posts_per_page' : posts_per_page
     })
 
+def profile(request, id):
+    login_user = request.user
+    profile_user = User.objects.get(pk=id)
+    all_posts = Post.objects.filter(author=profile_user).order_by('-id')
+    paginator = Paginator(all_posts,5)
+    page_number = request.GET.get('page')
+    posts_per_page = paginator.get_page(page_number)
+
+    following = Follow.objects.filter(user=profile_user)
+    followers = Follow.objects.filter(follower=profile_user)
+
+    try:
+        checkFollow = followers.filter(user=login_user)
+        if len(checkFollow) > 0:
+            isFollowing = True
+        else:
+            isFollowing = False
+    except:
+        isFollowing = False
+
+    return render(request, "network/profile.html",{
+        'posts_per_page' : posts_per_page,
+        'username' : profile_user.username,
+        'following' : following,
+        'followers' : followers,
+        'isfollowing' : isFollowing,
+        'profileuser' : profile_user
+    })
+
+def follow(request):
+    userfollow = request.POST['userfollow']
+    current_user = request.user
+    follow_user = User.objects.get(username=userfollow)
+    f = Follow(user=current_user, follower=follow_user)
+    f.save()
+    profileid = follow_user.id
+    return HttpResponseRedirect(reverse(profile, kwargs={'id' : profileid}))
+
+def unfollow(request):
+    userfollow = request.POST['userfollow']
+    current_user = request.user
+    follow_user = User.objects.get(username=userfollow)
+    f = Follow.objects.get(user=current_user, follower=follow_user)
+    f.delete()
+    profileid = follow_user.id
+    return HttpResponseRedirect(reverse(profile, kwargs={'id' : profileid}))
 
 def edit_post(request, id):
     current_post = Post.objects.get(pk=id)

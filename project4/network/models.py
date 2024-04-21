@@ -12,3 +12,10 @@ class Post(models.Model):
 
     def __str__(self) -> str:
         return f'Post {self.id} made by {self.author} on {self.date_posted}'
+
+class Follow(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE, related_name='following')
+    follower = models.ForeignKey(User,on_delete=models.CASCADE, related_name='followers')
+
+    def __str__(self) -> str:
+        return f'{self.user} is being followed by {self.follower}'
