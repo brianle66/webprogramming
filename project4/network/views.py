@@ -3,7 +3,7 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from .models import Post, User, Follow
+from .models import Post, User, Follow, Like
 from django.core.paginator import Paginator
 import json
 def index(request):
@@ -11,9 +11,49 @@ def index(request):
     paginator = Paginator(all_posts,5)
     page_number = request.GET.get('page')
     posts_per_page = paginator.get_page(page_number)
+
+    #get all the likes
+    all_likes = Like.objects.all()
+
+    all_liked_posts = []
+
+    try:
+        for like in all_likes:
+            if like.user.id == request.user.id:
+                all_liked_posts.append(like)
+    except:
+        all_liked_posts = []
+
     return render(request, "network/index.html",{
+        'posts_per_page' : posts_per_page,
+        'all_liked_posts' : all_liked_posts
+    })
+
+def remove_like(reuqest. post_id):
+    return
+
+def add_like(reuqest. post_id):
+    return
+
+def following(request):
+    current_user = request.user
+    following_list = Follow.objects.filter(user=current_user)
+    all_posts = Post.objects.all().order_by('-id')
+
+    following_posts = []
+
+    for post in all_posts:
+        for person in following_list:
+            if person.follower == post.author:
+                following_posts.append(post)
+    
+    paginator = Paginator(following_posts,5)
+    page_number = request.GET.get('page')
+    posts_per_page = paginator.get_page(page_number)
+    return render(request, "network/following.html",{
         'posts_per_page' : posts_per_page
     })
+
 
 def profile(request, id):
     login_user = request.user

@@ -31,7 +31,7 @@
     <div class="row posts"></div>
         <ul class="list-group posts">
             <li class="list-group-item">
-                {{post.author}}
+                <a href="{%url 'profile' id=post.author.id%}">@{{post.author}}</a>
                 {%if user == post.author%}
                     <a href="{% url 'editpost' id=post.id %}">Edit</a>
                 {%endif%}

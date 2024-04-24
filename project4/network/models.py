@@ -19,3 +19,10 @@ class Follow(models.Model):
 
     def __str__(self) -> str:
         return f'{self.user} is being followed by {self.follower}'
+    
+class Like(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_like')
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='post_like')
+
+    def __str__(self) -> str:
+        return f'{self.user} liked {self.post}'

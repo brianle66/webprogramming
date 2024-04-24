@@ -1,6 +1,23 @@
 {% extends "network/layout.html" %}
 
 {% block body %}
+
+    <script>
+        function LikeHandler(id, all_liked_posts){
+            if(all_liked_posts.indexOf(id) >= 0){
+                var liked = true;
+            } else {
+                var liked = false;
+            }
+
+            if(liked === true){
+                
+            } else {
+
+            }
+        }
+    </script>
+
     <h1>All Post</h1>
     {%if user.is_authenticated%}
         <h4>New Post</h4>
@@ -12,20 +29,29 @@
     {%endif%}
 
     <h4>All Post</h4>
-    {% for post in posts_per_page %}
-    <div class="row posts"></div>
-        <ul class="list-group posts">
-            <li class="list-group-item">
-                {{post.author}}
-                {%if user == post.author%}
-                    <a href="{% url 'editpost' id=post.id %}">Edit</a>
-                {%endif%}
-                <p class="mb-1">{{post.content}}</p>
-                <small>{{post.date_posted}}</small>
-            </li>
-        </ul>
-    </div>
-    {%endfor%}
+    
+        {% for post in posts_per_page %}
+            {%if user.is_authenticated%}
+                <div class="row posts"></div>
+                    <ul class="list-group posts">
+                        <li class="list-group-item">
+                            <a href="{%url 'profile' id=post.author.id%}">@{{post.author}}</a>
+                            {%if user == post.author%}
+                                <a href="{% url 'editpost' id=post.id %}">Edit</a>
+                            {%else%}
+                                {%if post in all_liked_posts%}
+                                    <button class="btn btn-info fa fa-thumbs-down col-1" onclick="LikeHandler('{{ post.id }}', '{{ all_liked_posts }}')" id="{{post.id}}">Unliked</button>
+                                {%else%}
+                                    <button class="btn btn-info fa fa-thumbs-up col-1" onclick="LikeHandler('{{ post.id }}', '{{ all_liked_posts }}')" id="{{post.id}}">Like</button>
+                                {%endif%}
+                            {%endif%}
+                            <p class="mb-1">{{post.content}}</p>
+                            <small>{{post.date_posted}}</small>
+                        </li>
+                    </ul>
+                </div>
+            {%endif%}
+        {%endfor%}
     <nav aria-label="Page navigation example">
         <ul class="pagination">
             {%if posts_per_page.has_previous %}
@@ -34,7 +60,6 @@
             {%if posts_per_page.has_next %}
                 <li class="page-item"><a class="page-link" href="?page={{posts_per_page.next_page_number}}">Next</a></li> 
             {%endif%}
-            
         </ul>
     </nav>
 {% endblock %}
