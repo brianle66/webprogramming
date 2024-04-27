@@ -20,7 +20,7 @@ def index(request):
     try:
         for like in all_likes:
             if like.user.id == request.user.id:
-                all_liked_posts.append(like)
+                all_liked_posts.append(like.post.id)
     except:
         all_liked_posts = []
 
@@ -29,11 +29,19 @@ def index(request):
         'all_liked_posts' : all_liked_posts
     })
 
-def remove_like(reuqest. post_id):
-    return
+def remove_like(request, post_id):
+    post = Post.objects.get(pk=post_id)
+    user = User.objects.get(pk=request.user.id)
+    like = Like.objects.filter(user=user, post=post)
+    like.delete()
+    return JsonResponse({'message': 'Like removed successfully'})
 
-def add_like(reuqest. post_id):
-    return
+def add_like(request, post_id):
+    post = Post.objects.get(pk=post_id)
+    user = User.objects.get(pk=request.user.id)
+    new_like = Like(user=user, post=post)
+    new_like.save()
+    return JsonResponse({'message': 'Like added successfully'})
 
 def following(request):
     current_user = request.user

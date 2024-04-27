@@ -3,19 +3,42 @@
 {% block body %}
 
     <script>
-        function LikeHandler(id, all_liked_posts){
-            if(all_liked_posts.indexOf(id) >= 0){
-                var liked = true;
-            } else {
-                var liked = false;
-            }
+        function LikeHandler(id, all_liked_posts) {
+            const btn = document.getElementById(id);
+            let liked = all_liked_posts.includes(id);
 
-            if(liked === true){
-                
+            if (liked) {
+                fetch(`/removelike/${id}`)
+                    .then(response => response.json())
+                    .then(result => {
+                        console.log(result);
+                        btn.textContent = 'Like';
+                        // Add appropriate class to reset button appearance
+                        location.reload()
+                    })
+                    .catch(error => {
+                        console.error('Error removing like:', error);
+                        // Provide feedback to the user about the error
+                        // For example: alert('Failed to remove like. Please try again.');
+                    });
             } else {
-
+                fetch(`/addlike/${id}`)
+                    .then(response => response.json())
+                    .then(result => {
+                        console.log(result);
+                        btn.textContent = 'Unlike';
+                        // Add appropriate class to reset button appearance
+                        location.reload()
+                    })
+                    .catch(error => {
+                        console.error('Error adding like:', error);
+                        // Provide feedback to the user about the error
+                        // For example: alert('Failed to add like. Please try again.');
+                    });
             }
         }
+
+
     </script>
 
     <h1>All Post</h1>
@@ -39,10 +62,10 @@
                             {%if user == post.author%}
                                 <a href="{% url 'editpost' id=post.id %}">Edit</a>
                             {%else%}
-                                {%if post in all_liked_posts%}
-                                    <button class="btn btn-info fa fa-thumbs-down col-1" onclick="LikeHandler('{{ post.id }}', '{{ all_liked_posts }}')" id="{{post.id}}">Unliked</button>
+                                {%if post.id in all_liked_posts%}
+                                    <button class="btn btn-info fa-thumbs-down col-1" onclick="LikeHandler('{{ post.id }}', '{{ all_liked_posts }}')" id="{{post.id}}">Unlike</button>
                                 {%else%}
-                                    <button class="btn btn-info fa fa-thumbs-up col-1" onclick="LikeHandler('{{ post.id }}', '{{ all_liked_posts }}')" id="{{post.id}}">Like</button>
+                                    <button class="btn btn-info fa-thumbs-up col-1" onclick="LikeHandler('{{ post.id }}', '{{ all_liked_posts }}')" id="{{post.id}}">Like</button>
                                 {%endif%}
                             {%endif%}
                             <p class="mb-1">{{post.content}}</p>
