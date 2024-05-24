@@ -6,16 +6,35 @@ from django.http import JsonResponse
 from django.shortcuts import HttpResponse, HttpResponseRedirect, render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
-
-from .models import User
-
-
+from .models import *
+from django.core.paginator import Paginator
 # Create your views here.
+def myproject(request):
+    
+    if request.user.is_authenticated:
+        project_list = Project.objects.filter(owner=request.user).order_by('-date')  # Get all projects and order by date
+
+        # Set the number of items per page
+        per_page = 10
+
+        paginator = Paginator(project_list, per_page)  # Create Paginator object
+        page_number = request.GET.get('page')  # Get the current page number from the request
+        projects_per_page = paginator.get_page(page_number)  # Get the current page
+
+        return render(request, 'cuttingcal/myproject.html', {'projects_per_page': projects_per_page})
+    # Everyone else is prompted to sign in
+    else:
+        return HttpResponseRedirect(reverse("login"))
+    
+def project(request, projectcode):
+
+    return render(request, 'cuttingcal/project.html')
+
 def index(request):
 
     # Authenticated users view their inbox
     if request.user.is_authenticated:
-        return render(request, "cuttingcal/index.html")
+        return render(request, "cuttingcal/index.html",)
 
     # Everyone else is prompted to sign in
     else:
@@ -68,4 +87,4 @@ def login_view(request):
     
 def logout_view(request):
     logout(request)
-    return HttpResponseRedirect(reverse("index"))
+    return HttpResponseRedirect(reverse("login"))

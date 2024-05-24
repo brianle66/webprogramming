@@ -24,12 +24,13 @@ class Project(models.Model):
     name = models.TextField()
     date = models.DateTimeField(default=timezone.now)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='projects')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='projects', null=False, default=1)
 
     def __str__(self) -> str:
         return f'Project: {self.code} - {self.name}'
 
 class Fabric(models.Model):
-    code = models.CharField(max_length=100, primary_key=True)
+    code = models.CharField(max_length=100, primary_key=True, blank=True)
     type = models.CharField(max_length=100)
     weight = models.IntegerField()
     ply_height = models.IntegerField()
@@ -59,12 +60,6 @@ class StyleFabric(models.Model):
         ('D', 'Fabric D'),
     ])
     perimeter = models.IntegerField()
-    code = models.CharField(max_length=100, blank=True)
-
-    def save(self, *args, **kwargs):
-        if not self.code:
-            self.code = f'{self.fabric.type}{self.fabric.weight}'
-        super(StyleFabric, self).save(*args, **kwargs)
 
     def __str__(self):
         return f'{self.style.name} uses {self.fabric} as Fabric {self.fabric_comp}'
@@ -80,6 +75,7 @@ class Order(models.Model):
 class Size(models.Model):
     size = models.CharField(max_length=2)
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='sizes')
+    qty = models.IntegerField(default=0)
 
     def __str__(self) -> str:
         return f'Order:{self.order.id} Size:{self.size}'

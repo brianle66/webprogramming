@@ -1,0 +1,27 @@
+{%extends 'cuttingcal/layout.html'%}
+
+{% block body %}
+    <h1>Project List</h1>
+    <div class="card" style="width: 100%;">
+        <ul class="list-group list-group-flush">
+            {% for project in projects_per_page %}
+                <li class="list-group-item">
+                    <a href="{% url 'project' project.code %}">
+                        {{ project }}
+                        <p><small>{{ project.date }}</small></p>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            {% if projects_per_page.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{ projects_per_page.previous_page_number }}">Previous</a></li> 
+            {% endif %}
+            {% if projects_per_page.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ projects_per_page.next_page_number }}">Next</a></li> 
+            {% endif %}
+        </ul>
+    </nav>
+{% endblock %}
