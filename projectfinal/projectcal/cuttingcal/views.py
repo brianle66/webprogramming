@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.http import JsonResponse
-from django.shortcuts import HttpResponse, HttpResponseRedirect, render
+from django.shortcuts import HttpResponse, HttpResponseRedirect, render, get_object_or_404
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from .models import *
@@ -26,9 +26,36 @@ def myproject(request):
     else:
         return HttpResponseRedirect(reverse("login"))
     
-def project(request, projectcode):
-
-    return render(request, 'cuttingcal/project.html')
+def project(request, code):
+    '''
+    View detail of one project including:
+        - Project ID
+        - Orders inside the project
+        - Order sizes and quantity of each
+        - Style of each order
+    '''
+    project = get_object_or_404(Project, code=code)
+    
+    if project.owner == request.user:
+        orders = project.orders.all()  # Get all orders associated with the project
+        
+        # Fetch sizes and styles for each order
+        order_details = []
+        for order in orders:
+            sizes = order.sizes.all()  # Get all sizes for the order
+            style = order.style  # Get the style of the order
+            order_details.append({
+                'order': order,
+                'sizes': sizes,
+                'style': style,
+            })
+        
+        return render(request, 'cuttingcal/project.html', {
+            'project': project,
+            'order_details': order_details,
+        })
+    else:
+        return render(request, 'cuttingcal/index.html')
 
 def index(request):
 

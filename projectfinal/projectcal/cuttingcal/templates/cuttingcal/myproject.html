@@ -6,7 +6,7 @@
         <ul class="list-group list-group-flush">
             {% for project in projects_per_page %}
                 <li class="list-group-item">
-                    <a href="{% url 'project' project.code %}">
+                    <a href="{%url 'project' code=project.code%}">
                         {{ project }}
                         <p><small>{{ project.date }}</small></p>
                     </a>

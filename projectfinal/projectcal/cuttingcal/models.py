@@ -59,7 +59,8 @@ class StyleFabric(models.Model):
         ('C', 'Fabric C'),
         ('D', 'Fabric D'),
     ])
-    perimeter = models.IntegerField()
+    perimeter = models.IntegerField(null=True)
+    avg_consumption = models.IntegerField(null=True)
 
     def __str__(self):
         return f'{self.style.name} uses {self.fabric} as Fabric {self.fabric_comp}'

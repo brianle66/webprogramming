@@ -1,5 +1,41 @@
 {%extends 'cuttingcal/layout.html'%}
 
 {%block body%}
-    <h1>Project</h1>
+    <small>Project Detail</small>
+    <div class="projectdetail">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <h1>Project: {{ project.name }}</h1>
+                <button class="btn btn-outline-warning" id="edit_project">Edit</button>
+                <button class="btn btn-outline-success" id="save_project" style="display: none;">Save</button>
+                <p>Code: {{ project.code }}</p>
+                <p>Date: {{ project.date }}</p>
+                <p>Customer: {{ project.customer.name }}</p>
+                <p>Owner: {{ project.owner.username }}</p>
+                
+                <h2>Orders</h2>
+                
+                {% for detail in order_details %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Order ID: {{ detail.order.id }}</h5>
+                            <p class="card-text">Date: {{ detail.order.date }}</p>
+                            <p class="card-text">Style: {{ detail.style.name }}</p>
+                            
+                            <h6>Sizes and Quantities</h6>
+                            <ul class="list-group list-group-horizontal" >
+                                {% for size in detail.sizes %}
+                                    <li class="list-group-item flex-fill">
+                                        Size: {{ size.size }} - Quantity: {{ size.qty }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                            <button class="btn btn-outline-warning" id="edit_order">Edit</button>
+                        </div>
+                    </div>
+                {% endfor %}
+                <button class="btn btn-outline-success" id="add_order">Add</button>
+            </li>
+        </ul>
+    </div>
 {%endblock%}
