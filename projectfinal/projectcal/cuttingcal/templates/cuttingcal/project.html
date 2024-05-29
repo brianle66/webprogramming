@@ -1,17 +1,23 @@
 {%extends 'cuttingcal/layout.html'%}
+{%load static%}
+
+{% block script %}
+    <script src="{% static 'cuttingcal/project.js' %}"></script>
+{% endblock %}
 
 {%block body%}
     <small>Project Detail</small>
     <div class="projectdetail">
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
-                <h1>Project: {{ project.name }}</h1>
-                <button class="btn btn-outline-warning" id="edit_project">Edit</button>
-                <button class="btn btn-outline-success" id="save_project" style="display: none;">Save</button>
-                <p>Code: {{ project.code }}</p>
-                <p>Date: {{ project.date }}</p>
-                <p>Customer: {{ project.customer.name }}</p>
-                <p>Owner: {{ project.owner.username }}</p>
+                <h1 id="projectName">Project: {{ project.name }}</h1>
+                <button class="btn btn-outline-warning" id="edit_project">Edit Project</button>
+                <button class="btn btn-outline-danger" id="save_project" style="display: none;">Save</button>
+                <button class="btn btn-outline-success" id="cancel_edit" style="display: none;">Cancel</button>
+                <p id="projectCode">Code: {{ project.code }}</p>
+                <p id="projectDate">Date: {{ project.date }}</p>
+                <p id="projectCustomer">Customer: {{ project.customer.name }}</p>
+                <p id="projectOwner">Owner: {{ project.owner.username }}</p>
                 
                 <h2>Orders</h2>
                 
@@ -30,11 +36,11 @@
                                     </li>
                                 {% endfor %}
                             </ul>
-                            <button class="btn btn-outline-warning" id="edit_order">Edit</button>
+                            <button class="btn btn-outline-warning" id="edit_order">Edit Order</button>
                         </div>
                     </div>
                 {% endfor %}
-                <button class="btn btn-outline-success" id="add_order">Add</button>
+                <button class="btn btn-outline-success" id="add_order">Add Order</button>
             </li>
         </ul>
     </div>
