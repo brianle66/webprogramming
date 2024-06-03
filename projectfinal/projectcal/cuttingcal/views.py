@@ -56,6 +56,36 @@ def project(request, code):
         })
     else:
         return render(request, 'cuttingcal/index.html')
+    
+@csrf_exempt
+def update_project(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            logger.info(f'Received data: {data}')
+            code = data.get('code')
+            name = data.get('name')
+            date = data.get('date')
+            customer_name = data.get('customer')
+
+            project = get_object_or_404(Project, code=code)
+
+            if project.owner != request.user:
+                return JsonResponse({'error': 'Unauthorized access'}, status=403)
+
+            customer, created = Customer.objects.get_or_create(name=customer_name)
+            logger.info(f'Customer: {customer}, Created: {created}')
+
+            project.name = name
+            project.date = date
+            project.customer = customer
+            project.save()
+
+            return JsonResponse({'success': True})
+        except Exception as e:
+            logger.error(f'Error updating project: {e}')
+            return JsonResponse({'error': str(e)}, status=400)
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
 
 def index(request):
 
