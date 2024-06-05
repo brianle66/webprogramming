@@ -5,10 +5,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const projectCustomerElement = document.querySelector("#projectCustomer");
 
     const initialData = {
-        name: projectNameElement.innerText,
-        code: projectCodeElement.innerText,
-        date: projectDateElement.innerText,
-        customer: projectCustomerElement.innerText
+        name: projectNameElement.innerText.split(': ')[1],
+        code: projectCodeElement.innerText.split(': ')[1], // Extract the actual code value
+        date: projectDateElement.innerText.split(': ')[1], // Extract the actual date value
+        customer: projectCustomerElement.innerText.split(': ')[1] // Extract the actual customer value
     };
 
     document.querySelector('#edit_project').addEventListener('click', edit_project);
@@ -20,17 +20,18 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelector('#cancel_edit').style.display = 'inline-block';
         document.querySelector('#edit_project').style.display = 'none';
 
+
         projectNameElement.innerHTML = `<input type="text" id="projectNameInput" value="${initialData.name}">`;
         projectCodeElement.innerHTML = `<input type="text" id="projectCodeInput" value="${initialData.code}">`;
-        projectDateElement.innerHTML = `<input type="text" id="projectDateInput" value="${initialData.date}">`;
+        projectDateElement.innerHTML = `<input type="date" id="projectDateInput" value="${initialData.date}">`;
         projectCustomerElement.innerHTML = `<input type="text" id="projectCustomerInput" value="${initialData.customer}">`;
     }
 
     function cancel_edit() {
-        projectNameElement.innerHTML = initialData.name;
-        projectCodeElement.innerHTML = initialData.code;
-        projectDateElement.innerHTML = initialData.date;
-        projectCustomerElement.innerHTML = initialData.customer;
+        projectNameElement.innerHTML = `Project: ${initialData.name}`;
+        projectCodeElement.innerHTML = `Code: ${initialData.code}`; // Restore the original format
+        projectDateElement.innerHTML = `Date: ${initialData.date}`; // Restore the original format
+        projectCustomerElement.innerHTML = `Customer: ${initialData.customer}`; // Restore the original format
 
         document.querySelector('#save_project').style.display = 'none';
         document.querySelector('#cancel_edit').style.display = 'none';
@@ -43,6 +44,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const projectDateInput = document.querySelector("#projectDateInput").value;
         const projectCustomerInput = document.querySelector("#projectCustomerInput").value;
 
+        const projectDate = new Date(projectDateInput).toISOString();
+
         fetch('/update_project/', {
             method: 'POST',
             headers: {
@@ -52,25 +55,28 @@ document.addEventListener('DOMContentLoaded', function() {
             body: JSON.stringify({
                 name: projectNameInput,
                 code: projectCodeInput,
-                date: projectDateInput,
+                date: projectDate,
                 customer: projectCustomerInput
             })
         }).then(response => {
-            return response.json().then(data => {
-                if (response.ok) {
-                    projectNameElement.innerText = projectNameInput;
-                    projectCodeElement.innerText = projectCodeInput;
-                    projectDateElement.innerText = projectDateInput;
-                    projectCustomerElement.innerText = projectCustomerInput;
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        }).then(data => {
+            if (data.success) {
+                projectNameElement.innerText = `Project: ${projectNameInput}`;
+                projectCodeElement.innerText = `Code: ${projectCodeInput}`;
+                projectDateElement.innerText = `Date: ${projectDateInput}`;
+                projectCustomerElement.innerText = `Customer: ${projectCustomerInput}`;
 
-                    document.querySelector('#save_project').style.display = 'none';
-                    document.querySelector('#cancel_edit').style.display = 'none';
-                    document.querySelector('#edit_project').style.display = 'inline-block';
-                } else {
-                    console.error('Failed to update project:', data);
-                    alert('Failed to update project');
-                }
-            });
+                document.querySelector('#save_project').style.display = 'none';
+                document.querySelector('#cancel_edit').style.display = 'none';
+                document.querySelector('#edit_project').style.display = 'inline-block';
+            } else {
+                console.error('Failed to update project:', data);
+                alert('Failed to update project');
+            }
         }).catch(error => {
             console.error('Error:', error);
             alert('Failed to update project');

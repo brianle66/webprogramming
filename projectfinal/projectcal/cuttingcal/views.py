@@ -1,4 +1,7 @@
 import json
+import logging
+
+logger = logging.getLogger(__name__)
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
@@ -8,6 +11,8 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from .models import *
 from django.core.paginator import Paginator
+from django.views.decorators.csrf import csrf_exempt
+
 # Create your views here.
 def myproject(request):
     
@@ -68,7 +73,11 @@ def update_project(request):
             date = data.get('date')
             customer_name = data.get('customer')
 
+            # Check the code value
+            logger.info(f'Project code: {code}')
+            
             project = get_object_or_404(Project, code=code)
+            logger.info(f'Found project: {project}')
 
             if project.owner != request.user:
                 return JsonResponse({'error': 'Unauthorized access'}, status=403)

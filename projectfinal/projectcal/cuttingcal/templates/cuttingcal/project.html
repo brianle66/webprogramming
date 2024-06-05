@@ -15,7 +15,7 @@
                 <button class="btn btn-outline-danger" id="save_project" style="display: none;">Save</button>
                 <button class="btn btn-outline-success" id="cancel_edit" style="display: none;">Cancel</button>
                 <p id="projectCode">Code: {{ project.code }}</p>
-                <p id="projectDate">Date: {{ project.date }}</p>
+                <p id="projectDate">Date: {{ project.date|date:"Y M d" }}</p>
                 <p id="projectCustomer">Customer: {{ project.customer.name }}</p>
                 <p id="projectOwner">Owner: {{ project.owner.username }}</p>
                 
