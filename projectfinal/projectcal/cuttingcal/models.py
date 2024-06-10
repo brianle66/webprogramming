@@ -72,6 +72,7 @@ class Order(models.Model):
 
     def __str__(self) -> str:
         return f'Order:{self.id}'
+    
 
 class Size(models.Model):
     size = models.CharField(max_length=2)

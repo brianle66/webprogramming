@@ -63,6 +63,39 @@ def project(request, code):
         return render(request, 'cuttingcal/index.html')
     
 @csrf_exempt
+
+def get_order_detail(request, projectcode, orderid):
+    try:
+        project = get_object_or_404(Project, code=projectcode)
+        logger.info(f"Project found: {project}")
+        
+        order = get_object_or_404(Order, id=orderid, project=project)
+        logger.info(f"Order found: {order}")
+        
+        order_details = {
+            'id': order.id,
+            'date': order.date.isoformat(),
+            'style': order.style.name,
+        }
+        return JsonResponse(order_details)
+    except Exception as e:
+        logger.error(f"Error fetching order details: {e}")
+        return JsonResponse({'error': str(e)}, status=500)
+    
+def update_order(request):
+    if request.method == 'POST':
+        order_id = request.POST.get('order_id')
+        order_date = request.POST.get('date')
+        order_style = request.POST.get('style')
+
+        order = get_object_or_404(Order, id=order_id)
+        order.date = order_date
+        order.style = get_object_or_404(Style, name=order_style)
+        order.save()
+
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False, 'error': 'Invalid request'}, status=400)
+
 def update_project(request):
     if request.method == 'POST':
         try:

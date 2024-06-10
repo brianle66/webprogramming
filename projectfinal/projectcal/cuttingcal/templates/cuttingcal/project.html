@@ -30,16 +30,34 @@
                             
                             <h6>Sizes and Quantities</h6>
                             <ul class="list-group list-group-horizontal" >
-                                {% for size in detail.sizes %}
+                                
                                     <li class="list-group-item flex-fill">
-                                        Size: {{ size.size }} - Quantity: {{ size.qty }}
+                                        {% for size in detail.sizes %}
+                                            {{ size.size }}{{ size.qty }}
+                                        {% endfor %}
                                     </li>
-                                {% endfor %}
+                                
                             </ul>
-                            <button class="btn btn-outline-warning" id="edit_order">Edit Order</button>
+                            <button class="btn btn-outline-warning" id="edit_order" data-project-code="{{ detail.order.project.code }}" data-order-id="{{ detail.order.id }}">Edit Order</button>
+                            
                         </div>
                     </div>
                 {% endfor %}
+                <div class="modal fade" id="editOrderModal" tabindex="-1" aria-labelledby="editOrderModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editOrderModalLabel">Edit Order</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body" id="modalBody">
+                                <!-- Form will be inserted here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                
                 <button class="btn btn-outline-success" id="add_order">Add Order</button>
             </li>
         </ul>

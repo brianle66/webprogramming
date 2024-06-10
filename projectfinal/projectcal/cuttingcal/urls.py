@@ -9,5 +9,7 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('myproject/', views.myproject, name='myproject'),
     path('project/<str:code>/', views.project, name='project'),
-    path('update_project/', views.update_project, name='update_project')
+    path('project/<str:projectcode>/<int:orderid>/', views.get_order_detail, name="get_order_detail"),
+    path('update_project/', views.update_project, name='update_project'),
+    path('update_order/<int:order_id>/', views.update_order, name='update_order')
 ]
