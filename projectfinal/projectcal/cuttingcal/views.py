@@ -14,6 +14,13 @@ from django.core.paginator import Paginator
 from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
+
+def calculation(request):
+    if request.user.is_authenticated:
+        return render(request, 'cuttingcal/calculation.html')
+    else:
+        return HttpResponseRedirect(redirect_to= "register")
+
 def myproject(request):
     
     if request.user.is_authenticated:

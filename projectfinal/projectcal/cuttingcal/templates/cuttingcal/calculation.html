@@ -1,0 +1,46 @@
+{%extends 'cuttingcal/layout.html'%}
+
+{%block body%}
+  <h1>Project Calculation</h1>
+  <div class="container mt-5" >
+    <form id="projectcalform">
+        <div class="step active">
+            <h4>Step 1: Create Project</h4>
+            <div class="form-group">
+                <label for="projectName">Project name:</label>
+                <input type="text" id="projectName" name="projectName" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="projectCode">Code:</label>
+                <input type="text" id="projectCode" name="projectCode" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="projectCustomer">Customer:</label>
+                <input type="text" id="projectCustomer" name="projectCustomer" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="projectDate">Date:</label>
+                <input type="text" id="projectDate" name="projectDate" class="form-control">
+            </div>
+            <button type="button" class="btn btn-primary next">Next</button>
+        </div>
+        <div class="step active">
+            <h4>Step 2: Create Order</h4>
+            <div class="form-group">
+                <label for="orderStyle">Style:</label>
+                <input type="text" id="orderStyle" name="orderStyle" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="styleFabric">Fabric:</label>
+                <input type="text" id="styleFabric" name="styleFabric" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="fabricComp">Component:</label>
+                <input type="text" id="fabricComp" name="fabricComp" class="form-control">
+            </div>
+            <button type="button" class="btn btn-secondary prev">Previous</button>
+            <button type="button" class="btn btn-primary next">Next</button>
+        </div>
+    </form>
+  </div>
+{%endblock%}
