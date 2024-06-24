@@ -11,24 +11,6 @@ class Customer(models.Model):
     def __str__(self) -> str:
         return f'Customer: {self.name}'
 
-class Factory(models.Model):
-    name = models.CharField(max_length=255)
-    location = models.CharField(max_length=255)
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='factories')
-
-    def __str__(self) -> str:
-        return f'Customer: {self.customer} - Factory: {self.name} - Site: {self.location}'
-
-class Project(models.Model):
-    code = models.CharField(max_length=10, primary_key=True)
-    name = models.TextField()
-    date = models.DateTimeField(default=timezone.now)
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='projects')
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='projects', null=False, default=1)
-
-    def __str__(self) -> str:
-        return f'Project: {self.code} - {self.name}'
-
 class Fabric(models.Model):
     code = models.CharField(max_length=100, primary_key=True, blank=True)
     type = models.CharField(max_length=100)
@@ -67,8 +49,8 @@ class StyleFabric(models.Model):
 
 class Order(models.Model):
     style = models.ForeignKey(Style, on_delete=models.CASCADE, related_name='orders')
-    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='orders')
-    date = models.DateTimeField(default=timezone.now)
+    project = models.CharField(max_length=15, blank=False)
+    date = models.DateField(default=timezone.now)
 
     def __str__(self) -> str:
         return f'Order:{self.id}'
