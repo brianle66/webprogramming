@@ -34,7 +34,7 @@ class Style(models.Model):
 
 class StyleFabric(models.Model):
     style = models.ForeignKey(Style, on_delete=models.CASCADE, related_name='style_fabrics')
-    fabric = models.ForeignKey(Fabric, on_delete=models.CASCADE, related_name='fabric_styles')
+    fabric_code = models.ForeignKey(Fabric, on_delete=models.CASCADE, related_name='fabric_styles')
     fabric_comp = models.CharField(max_length=1, choices=[
         ('A', 'Fabric A'),
         ('B', 'Fabric B'),

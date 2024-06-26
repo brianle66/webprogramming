@@ -2,46 +2,44 @@
 
 {%block body%}
   <h1>Project Calculation</h1>
-  <div class="container mt-5" >
-    <form id="projectcalform">
-        <div class="step active">
-            <h4>Step 1: Create Project</h4>
-            <div class="form-group">
-                <label for="projectName">Project name:</label>
-                <input type="text" id="projectName" name="projectName" class="form-control">
+  <div class="card text-left">
+    <div class="card-header">
+      <ul class="nav nav-pills card-header-pills">
+        <li class="nav-item">
+          <a class="nav-link active" href="#">Step 1: Create Order</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Step 2: Add Model</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+        </li>
+      </ul>
+    </div>
+    <div class="step active">
+        <div class="card-body">
+            <h5 class="card-title">New Order</h5>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">Project</span>
+                <input type="text" class="form-control" placeholder="Project code" aria-label="Project code" aria-describedby="basic-addon1">
             </div>
-            <div class="form-group">
-                <label for="projectCode">Code:</label>
-                <input type="text" id="projectCode" name="projectCode" class="form-control">
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">Style</span>
+                <input type="text" class="form-control" placeholder="Style name" aria-label="Style name" aria-describedby="basic-addon1">
             </div>
-            <div class="form-group">
-                <label for="projectCustomer">Customer:</label>
-                <input type="text" id="projectCustomer" name="projectCustomer" class="form-control">
-            </div>
-            <div class="form-group">
-                <label for="projectDate">Date:</label>
-                <input type="text" id="projectDate" name="projectDate" class="form-control">
-            </div>
-            <button type="button" class="btn btn-primary next">Next</button>
+            <a href="#" class="btn btn-primary">Next</a>
         </div>
-        <div class="step active">
-            <h4>Step 2: Create Order</h4>
-            <div class="form-group">
-                <label for="orderStyle">Style:</label>
-                <input type="text" id="orderStyle" name="orderStyle" class="form-control">
+    </div>
+
+    <div class="step active">
+        <div class="card-body">
+            <h5 class="card-title">Add style</h5>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">Name</span>
+                <input type="text" class="form-control" placeholder="Style name" aria-label="Style name" aria-describedby="basic-addon1">
             </div>
-            <div class="form-group">
-                <label for="styleFabric">Fabric:</label>
-                <input type="text" id="styleFabric" name="styleFabric" class="form-control">
-            </div>
-            <div class="form-group">
-                <label for="fabricComp">Component:</label>
-                <input type="text" id="fabricComp" name="fabricComp" class="form-control">
-            </div>
-            
-            <button type="button" class="btn btn-secondary prev">Previous</button>
-            <button type="button" class="btn btn-primary next">Next</button>
+            <a href="#" class="btn btn-primary">Next</a>
         </div>
-    </form>
+    </div>
   </div>
 {%endblock%}
