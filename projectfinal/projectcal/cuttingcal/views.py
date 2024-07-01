@@ -17,7 +17,12 @@ from django.views.decorators.csrf import csrf_exempt
 
 def calculation(request):
     if request.user.is_authenticated:
-        return render(request, 'cuttingcal/calculation.html')
+        fabrics = Fabric.objects.all()
+        styles = Style.objects.all()
+        return render(request, 'cuttingcal/calculation.html',{
+            "fabrics" : fabrics,
+            "styles" : styles
+        })
     else:
         return HttpResponseRedirect(redirect_to= "register")
 

@@ -1,45 +1,112 @@
-{%extends 'cuttingcal/layout.html'%}
+{% extends 'cuttingcal/layout.html' %}
+{% load static %}
 
-{%block body%}
-  <h1>Project Calculation</h1>
-  <div class="card text-left">
-    <div class="card-header">
-      <ul class="nav nav-pills card-header-pills">
-        <li class="nav-item">
-          <a class="nav-link active" href="#">Step 1: Create Order</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Step 2: Add Model</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-        </li>
-      </ul>
-    </div>
-    <div class="step active">
-        <div class="card-body">
-            <h5 class="card-title">New Order</h5>
-            <div class="input-group mb-3">
-                <span class="input-group-text" id="basic-addon1">Project</span>
-                <input type="text" class="form-control" placeholder="Project code" aria-label="Project code" aria-describedby="basic-addon1">
-            </div>
-            <div class="input-group mb-3">
-                <span class="input-group-text" id="basic-addon1">Style</span>
-                <input type="text" class="form-control" placeholder="Style name" aria-label="Style name" aria-describedby="basic-addon1">
-            </div>
-            <a href="#" class="btn btn-primary">Next</a>
-        </div>
-    </div>
+{% block title %}
+  Project Calculation
+{% endblock %}
 
-    <div class="step active">
-        <div class="card-body">
-            <h5 class="card-title">Add style</h5>
-            <div class="input-group mb-3">
-                <span class="input-group-text" id="basic-addon1">Name</span>
-                <input type="text" class="form-control" placeholder="Style name" aria-label="Style name" aria-describedby="basic-addon1">
-            </div>
-            <a href="#" class="btn btn-primary">Next</a>
-        </div>
-    </div>
-  </div>
+{%block styles%}
+  <style>
+    .larger-select {
+        width: 100%;
+        height: auto;
+        padding: 0.5rem;
+        font-size: 1rem;
+    }
+  </style>
 {%endblock%}
+
+{% block body %}
+<h1>Project Calculation</h1>
+<div class="card text-left">
+  <div class="card-header">
+    <ul class="nav nav-pills card-header-pills">
+      <li class="nav-item">
+        <a class="nav-link active" href="#">Step 1: Create Order</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Step 2: Add Model</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Step 3: Choose Fabric</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Step 4: Parameters</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Step 5: Calculate</a>
+      </li>
+    </ul>
+  </div>
+  <form id="order_form" method="POST">
+    <div id="order" class="step active">
+      <div class="card-body">
+        <h5 class="card-title">New Order</h5>
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1">Project</span>
+          <input type="text" class="form-control" placeholder="Project code" aria-label="Project code" aria-describedby="basic-addon1">
+        </div>
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1">Style</span>
+          <input type="text" class="form-control" placeholder="Style name" aria-label="Style name" aria-describedby="basic-addon1">
+        </div>
+      </div>
+    </div>
+
+    <div id="style" class="step active">
+      <div class="card-body">
+        <h5 class="card-title">Add Style</h5>
+        <div class="input-group mb-3">
+          <label class="input-group-text" for="styleSelect">Style</label>
+          <select class="form-select" id="styleSelect" aria-label="Style">
+            {% for style in styles %}
+              <option value="{{ style.name }}">{{ style.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+    </div>
+    <div id="fabric" class="step active">
+      <div class="card-body">
+        <h5 class="card-title">Choose fabric</h5>
+        <div class="input-group mb-3">
+          <label class="input-group-text" for="fabricCodeSelect">Fabric code</label>
+          <select class="form-select" id="fabricCodeSelect" aria-label="Fabric code">
+            {% for fabric in fabrics %}
+              <option value="{{ fabric.code }}">{{ fabric.code }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div id="parameters" class="step active">
+      <div class="card-body">
+        <h5 class="card-title">Marker Parameter</h5>
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1">Order quantity</span>
+          <input type="text" class="form-control" placeholder="Order quantity" aria-label="Order quantity" aria-describedby="basic-addon1">
+        </div>
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1">Marker length</span>
+          <input type="text" class="form-control" placeholder="Marker length in meter" aria-label="Marker length in meter" aria-describedby="basic-addon1">
+        </div>
+      </div>
+    </div>
+    <a href="#" class="btn btn-primary">Calculate</a>
+    <a href="#" class="btn btn-primary">Save</a>
+  </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  $(document).ready(function() {
+      $('#fabricCodeSelect').select2({
+          placeholder: "Select fabric code",
+          allowClear: true
+      });
+  });
+</script>
+<script src="{% static 'cuttingcal/calculation.js' %}"></script>
+{% endblock %}
