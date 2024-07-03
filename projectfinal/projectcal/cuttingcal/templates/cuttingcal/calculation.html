@@ -47,16 +47,6 @@
           <input type="text" class="form-control" placeholder="Project code" aria-label="Project code" aria-describedby="basic-addon1">
         </div>
         <div class="input-group mb-3">
-          <span class="input-group-text" id="basic-addon1">Style</span>
-          <input type="text" class="form-control" placeholder="Style name" aria-label="Style name" aria-describedby="basic-addon1">
-        </div>
-      </div>
-    </div>
-
-    <div id="style" class="step active">
-      <div class="card-body">
-        <h5 class="card-title">Add Style</h5>
-        <div class="input-group mb-3">
           <label class="input-group-text" for="styleSelect">Style</label>
           <select class="form-select" id="styleSelect" aria-label="Style">
             {% for style in styles %}
@@ -66,6 +56,7 @@
         </div>
       </div>
     </div>
+
     <div id="fabric" class="step active">
       <div class="card-body">
         <h5 class="card-title">Choose fabric</h5>
@@ -77,6 +68,14 @@
             {% endfor %}
           </select>
         </div>
+        <div class="input-group mb-3">
+          <label class="input-group-text" for="fabricCompSelect">Fabric component</label>
+          <select class="form-select" id="fabricCompSelect" aria-label="Fabric component">
+            {% for f_comp in fabric_comp %}
+              <option value="{{ f_comp }}">{{ f_comp }}</option>
+            {% endfor %}
+          </select>
+        </div>
       </div>
     </div>
 
@@ -85,16 +84,21 @@
         <h5 class="card-title">Marker Parameter</h5>
         <div class="input-group mb-3">
           <span class="input-group-text" id="basic-addon1">Order quantity</span>
-          <input type="text" class="form-control" placeholder="Order quantity" aria-label="Order quantity" aria-describedby="basic-addon1">
+          <input type="text" id="orderQuantity" class="form-control" placeholder="Order quantity" aria-label="Order quantity" aria-describedby="basic-addon1">
         </div>
         <div class="input-group mb-3">
           <span class="input-group-text" id="basic-addon1">Marker length</span>
-          <input type="text" class="form-control" placeholder="Marker length in meter" aria-label="Marker length in meter" aria-describedby="basic-addon1">
+          <input type="text" id="markerLength" class="form-control" placeholder="Marker length in meter" aria-label="Marker length in meter" aria-describedby="basic-addon1">
         </div>
       </div>
     </div>
-    <a href="#" class="btn btn-primary">Calculate</a>
-    <a href="#" class="btn btn-primary">Save</a>
+
+    <div id="footer" class="step active">
+      <div class="card-body">
+        <a href="#" class="btn btn-primary">Calculate</a>
+        <a href="#" class="btn btn-primary">Save</a>
+      </div>
+    </div>
   </form>
 </div>
 {% endblock %}
@@ -104,6 +108,10 @@
   $(document).ready(function() {
       $('#fabricCodeSelect').select2({
           placeholder: "Select fabric code",
+          allowClear: true
+      });
+      $('#styleSelect').select2({
+          placeholder: "Select style",
           allowClear: true
       });
   });

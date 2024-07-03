@@ -3,7 +3,6 @@ import logging
 
 logger = logging.getLogger(__name__)
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.http import JsonResponse
 from django.shortcuts import HttpResponse, HttpResponseRedirect, render, get_object_or_404
@@ -11,7 +10,6 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from .models import *
 from django.core.paginator import Paginator
-from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 
@@ -19,9 +17,11 @@ def calculation(request):
     if request.user.is_authenticated:
         fabrics = Fabric.objects.all()
         styles = Style.objects.all()
+        fabric_comp = ['A','B','C','D']
         return render(request, 'cuttingcal/calculation.html',{
             "fabrics" : fabrics,
-            "styles" : styles
+            "styles" : styles,
+            "fabric_comp" : fabric_comp
         })
     else:
         return HttpResponseRedirect(redirect_to= "register")

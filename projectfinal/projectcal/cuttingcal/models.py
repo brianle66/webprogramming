@@ -7,7 +7,6 @@ class User(AbstractUser):
 
 class Customer(models.Model):
     name = models.CharField(max_length=255)
-
     def __str__(self) -> str:
         return f'Customer: {self.name}'
 
@@ -17,18 +16,15 @@ class Fabric(models.Model):
     weight = models.IntegerField()
     ply_height = models.IntegerField()
     cutting_speed = models.IntegerField()
-
     def save(self, *args, **kwargs):
         if not self.code:
             self.code = f'{self.type}{self.weight}'
         super(Fabric, self).save(*args, **kwargs)
-
     def __str__(self):
         return f'Fabric: {self.code}'
 
 class Style(models.Model):
     name = models.CharField(max_length=50, primary_key=True)
-
     def __str__(self):
         return f'Style: {self.name}'
 
@@ -48,18 +44,11 @@ class StyleFabric(models.Model):
         return f'{self.style.name} uses {self.fabric} as Fabric {self.fabric_comp}'
 
 class Order(models.Model):
-    style = models.ForeignKey(Style, on_delete=models.CASCADE, related_name='orders')
     project = models.CharField(max_length=15, blank=False)
+    style = models.ForeignKey(Style, on_delete=models.CASCADE, related_name='orders')
+    qty = models.IntegerField(null=False, default=100)
     date = models.DateField(default=timezone.now)
 
     def __str__(self) -> str:
         return f'Order:{self.id}'
     
-
-class Size(models.Model):
-    size = models.CharField(max_length=2)
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='sizes')
-    qty = models.IntegerField(default=0)
-
-    def __str__(self) -> str:
-        return f'Order:{self.order.id} Size:{self.size}'
