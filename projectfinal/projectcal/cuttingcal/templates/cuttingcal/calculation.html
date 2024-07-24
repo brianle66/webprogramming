@@ -5,116 +5,91 @@
   Project Calculation
 {% endblock %}
 
+{% block pagetitle %}
+  <h1>Project Calculation</h1>
+{% endblock %}
+
 {%block styles%}
-  <style>
-    .larger-select {
-        width: 100%;
-        height: auto;
-        padding: 0.5rem;
-        font-size: 1rem;
-    }
-  </style>
 {%endblock%}
 
 {% block body %}
-<h1>Project Calculation</h1>
-<div class="card text-left">
-  <div class="card-header">
-    <ul class="nav nav-pills card-header-pills">
-      <li class="nav-item">
-        <a class="nav-link active" href="#">Step 1: Create Order</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Step 2: Add Model</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Step 3: Choose Fabric</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Step 4: Parameters</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Step 5: Calculate</a>
-      </li>
-    </ul>
+<div class="full-height-container">
+  <div class="row w-100 align-items-left">
+    <!-- Project data input -->
+    <div class="col-md-4">
+      <form class="project-form" action="{% url 'login' %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+          <h5>Project Information</h5>
+          <span><small>Please enter required data below</small></span>
+        </div>
+        <div class="form-group">
+          <h6>Project Name</h6>
+          <input class="rounded-input" type="Project" name="Project" placeholder="Type Project">
+        </div>
+        <div class="form-group">
+          <h6>Style</h6>
+          <select name="styleid" id="styleid" class="rounded-select">
+            <option value="A">A</option>
+            <option value="B">B</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <h6>Main Fabric</h6>
+          <select name="fabricid" id="fabricid" class="rounded-select" disabled>
+            <option value="A">A</option>
+            <option value="B">B</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <h6>Fabric component</h6>
+          <select name="component" id="component" class="rounded-select" disabled>
+            <option value="A">A</option>
+            <option value="B">B</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <h6>Quantity</h6>
+          <input class="rounded-input" type="Quantity" name="Quantity" placeholder="Type Quantity">
+        </div>
+        <div class="form-group">
+          <input class="btn btn-primary" type="submit" value="Login">
+        </div>
+        <div class="form-group">
+          Don't have an account? <a href="{% url 'register' %}">Register here.</a>
+        </div>
+      </form>
+    </div>
+    <!-- Selected Data -->
+    <div class="col-lg-8">
+      <form class="project-form" action="{% url 'login' %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+          <h5>Project Information</h5>
+          <span><small>Please enter required data below</small></span>
+        </div>
+        <div class="form-group">
+          <h6>Username</h6>
+          <input class="form-control rounded-input" type="username" name="username" placeholder="Type username">
+        </div>
+        <div class="form-group">
+          <h6>Password</h6>
+          <input class="form-control rounded-input" type="password" name="password" placeholder="Insert password">
+        </div>
+        <div class="form-group">
+          <input class="btn btn-primary" type="submit" value="Login">
+        </div>
+        <div class="form-group">
+          Don't have an account? <a href="{% url 'register' %}">Register here.</a>
+        </div>
+      </form>
+    </div>
   </div>
-  <form id="order_form" method="POST">
-    <div id="order" class="step active">
-      <div class="card-body">
-        <h5 class="card-title">New Order</h5>
-        <div class="input-group mb-3">
-          <span class="input-group-text" id="basic-addon1">Project</span>
-          <input type="text" class="form-control" placeholder="Project code" aria-label="Project code" aria-describedby="basic-addon1">
-        </div>
-        <div class="input-group mb-3">
-          <label class="input-group-text" for="styleSelect">Style</label>
-          <select class="form-select" id="styleSelect" aria-label="Style">
-            {% for style in styles %}
-              <option value="{{ style.name }}">{{ style.name }}</option>
-            {% endfor %}
-          </select>
-        </div>
-      </div>
-    </div>
-
-    <div id="fabric" class="step active">
-      <div class="card-body">
-        <h5 class="card-title">Choose fabric</h5>
-        <div class="input-group mb-3">
-          <label class="input-group-text" for="fabricCodeSelect">Fabric code</label>
-          <select class="form-select" id="fabricCodeSelect" aria-label="Fabric code">
-            {% for fabric in fabrics %}
-              <option value="{{ fabric.code }}">{{ fabric.code }}</option>
-            {% endfor %}
-          </select>
-        </div>
-        <div class="input-group mb-3">
-          <label class="input-group-text" for="fabricComp1Select">Fabric component</label>
-          <select class="form-select" id="fabricComp1Select" aria-label="Fabric component">
-            {% for f_comp in fabric_comp %}
-              <option value="{{ f_comp }}">{{ f_comp }}</option>
-            {% endfor %}
-          </select>
-        </div>
-      </div>
-    </div>
-
-    <div id="parameters" class="step active">
-      <div class="card-body">
-        <h5 class="card-title">Marker Parameter</h5>
-        <div class="input-group mb-3">
-          <span class="input-group-text" id="basic-addon1">Order quantity</span>
-          <input type="text" id="orderQuantity" class="form-control" placeholder="Order quantity" aria-label="Order quantity" aria-describedby="basic-addon1">
-        </div>
-        <div class="input-group mb-3">
-          <span class="input-group-text" id="basic-addon1">Marker length</span>
-          <input type="text" id="markerLength" class="form-control" placeholder="Marker length in meter" aria-label="Marker length in meter" aria-describedby="basic-addon1">
-        </div>
-      </div>
-    </div>
-
-    <div id="footer" class="step active">
-      <div class="card-body">
-        <a href="#" class="btn btn-primary">Calculate</a>
-        <a href="#" class="btn btn-primary">Save</a>
-      </div>
-    </div>
-  </form>
 </div>
+
 {% endblock %}
 
 {% block scripts %}
 <script>
-  $(document).ready(function() {
-      $('#fabricCodeSelect').select2({
-          placeholder: "Select fabric code",
-          allowClear: true
-      });
-      $('#styleSelect').select2({
-          placeholder: "Select style",
-          allowClear: true
-      });
-  });
 </script>
-<script src="{% static 'cuttingcal/calculation.js' %}"></script>
 {% endblock %}
