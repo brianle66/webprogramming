@@ -14,7 +14,7 @@
 
 {% block body %}
 <div class="full-height-container">
-  <div class="row w-100 align-items-left">
+  <div class="row w-100 align-items-left" id="projectinput">
     <!-- Project data input -->
     <div class="col-md-4">
       <form class="project-form" action="{% url 'login' %}" method="post">
@@ -53,38 +53,55 @@
           <input class="rounded-input" type="Quantity" name="Quantity" placeholder="Type Quantity">
         </div>
         <div class="form-group">
-          <input class="btn btn-primary" type="submit" value="Login">
-        </div>
-        <div class="form-group">
-          Don't have an account? <a href="{% url 'register' %}">Register here.</a>
+          <input class="btn btn-secondary" type="submit" value="Clear">
         </div>
       </form>
     </div>
     <!-- Selected Data -->
     <div class="col-lg-8">
-      <form class="project-form" action="{% url 'login' %}" method="post">
+      <form class="project-form" action="" method="get">
         {% csrf_token %}
         <div class="form-group">
-          <h5>Project Information</h5>
-          <span><small>Please enter required data below</small></span>
+          <h5>Selected Style</h5>
+          <span><small>Please check selected style below</small></span>
+        </div>
+        <div class="form-group model-image">
+          <h6>Model</h6>
+          <img src="https://static.vecteezy.com/system/resources/previews/010/157/230/non_2x/pocket-t-shirt-flat-technical-drawing-cad-illustration-short-sleeve-blank-streetwear-mock-up-template-for-design-and-tech-packs-vector.jpg" alt="">
         </div>
         <div class="form-group">
-          <h6>Username</h6>
-          <input class="form-control rounded-input" type="username" name="username" placeholder="Type username">
+          <h6>Fabrics</h6>
+          <div class="row align-items-left">
+            <div class="col fabric-checkbox">
+              <input type="checkbox" value="">
+              A
+            </div>
+            <div class="col fabric-checkbox">
+              <input type="checkbox" value="">
+              B
+            </div>
+            <div class="col fabric-checkbox">
+              <input type="checkbox" value="">
+              C
+            </div>
+          </div>
         </div>
         <div class="form-group">
-          <h6>Password</h6>
-          <input class="form-control rounded-input" type="password" name="password" placeholder="Insert password">
+          <input class="btn btn-primary" type="submit" value="Calculate">
         </div>
+      </form>
+    </div>
+
+    <div class="col">
+      <form class="project-form" action="" method="put">
+        <h6>Result</h6>
         <div class="form-group">
-          <input class="btn btn-primary" type="submit" value="Login">
-        </div>
-        <div class="form-group">
-          Don't have an account? <a href="{% url 'register' %}">Register here.</a>
+          This project need 3 cutter and 6 spreader
         </div>
       </form>
     </div>
   </div>
+
 </div>
 
 {% endblock %}
