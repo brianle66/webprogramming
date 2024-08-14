@@ -1,17 +1,10 @@
-.step.active{
-    display: block;
-}
-
-.step{
-    display: none;
-}
-
 body, html {
     height: 100%;
     background-color: black;
     margin: 0;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
+
 .full-height-container {
     display: flex;
     flex-direction: column;
@@ -19,21 +12,43 @@ body, html {
     align-items: center;
     width: 100%; /* Ensure full width */
 }
+
+.row {
+    display: flex;
+    justify-content: center;  /* Center horizontally */
+    align-items: center;      /* Center vertically */
+}
+
 .login-form {
     width: 100%;
     max-width: 400px;
 }
 
-.project-form{
-    margin-bottom: 30px;
+.project-form {
+    background-color: transparent;
+    padding: 20px;
 }
 
-.login-form .form-group {
-    margin-bottom: 1rem;
-}
-.form-group .btn {
+.project-form .btn{
     width: 100%;
 }
+
+.form-group{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+/* Project Information and Order Information sections */
+.projectinfo, .orderinfo {
+    background-color: white;
+    border-radius: 15px; /* Rounded corners */
+    padding: 20px;
+    margin-bottom: 20px; /* Space between sections */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
+}
+
+/* To ensure that the submit button doesn't overlap with the form content */
+
 .navbar-custom {
     height: 80px; /* Adjust based on your navbar height */
     background-color: white;
@@ -49,6 +64,11 @@ body, html {
 
 .btn-primary{
     background-color: black;
+}
+
+.btn-secondary{
+    background-color: whitesmoke;
+    color: black;
 }
 
 form{
@@ -99,7 +119,3 @@ small{
     transform: translate(-50%, -50%); /* This centers the image within the container */
   }
 
-.fabric-checkbox input{
-    height: 20px;
-    width: 20px;
-}

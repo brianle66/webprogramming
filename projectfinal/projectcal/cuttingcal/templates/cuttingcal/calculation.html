@@ -13,95 +13,65 @@
 {%endblock%}
 
 {% block body %}
+
 <div class="full-height-container">
-  <div class="row w-100 align-items-left" id="projectinput">
-    <!-- Project data input -->
-    <div class="col-md-4">
-      <form class="project-form" action="{% url 'login' %}" method="post">
-        {% csrf_token %}
-        <div class="form-group">
-          <h5>Project Information</h5>
-          <span><small>Please enter required data below</small></span>
-        </div>
+  <div class="row w-100 align-items-center">
+    <!-- Project information -->
+    <form class="col-md-6 project-form" action="" method="post">
+    {% csrf_token %}
+      <!--Project Information-->
+      <div class="projectinfo form-group">
+        <h5>Project Information</h5>
+        <small>Insert below information for project.</small>
+
         <div class="form-group">
           <h6>Project Name</h6>
-          <input class="rounded-input" type="Project" name="Project" placeholder="Type Project">
+          <input class="rounded-input" type="text" id="projectName" placeholder="Type in project name">
         </div>
-        <div class="form-group">
-          <h6>Style</h6>
-          <select name="styleid" id="styleid" class="rounded-select">
-            <option value="A">A</option>
-            <option value="B">B</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <h6>Main Fabric</h6>
-          <select name="fabricid" id="fabricid" class="rounded-select" disabled>
-            <option value="A">A</option>
-            <option value="B">B</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <h6>Fabric component</h6>
-          <select name="component" id="component" class="rounded-select" disabled>
-            <option value="A">A</option>
-            <option value="B">B</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <h6>Quantity</h6>
-          <input class="rounded-input" type="Quantity" name="Quantity" placeholder="Type Quantity">
-        </div>
-        <div class="form-group">
-          <input class="btn btn-secondary" type="submit" value="Clear">
-        </div>
-      </form>
-    </div>
-    <!-- Selected Data -->
-    <div class="col-lg-8">
-      <form class="project-form" action="" method="get">
-        {% csrf_token %}
-        <div class="form-group">
-          <h5>Selected Style</h5>
-          <span><small>Please check selected style below</small></span>
-        </div>
-        <div class="form-group model-image">
-          <h6>Model</h6>
-          <img src="https://static.vecteezy.com/system/resources/previews/010/157/230/non_2x/pocket-t-shirt-flat-technical-drawing-cad-illustration-short-sleeve-blank-streetwear-mock-up-template-for-design-and-tech-packs-vector.jpg" alt="">
-        </div>
-        <div class="form-group">
-          <h6>Fabrics</h6>
-          <div class="row align-items-left">
-            <div class="col fabric-checkbox">
-              <input type="checkbox" value="">
-              A
-            </div>
-            <div class="col fabric-checkbox">
-              <input type="checkbox" value="">
-              B
-            </div>
-            <div class="col fabric-checkbox">
-              <input type="checkbox" value="">
-              C
-            </div>
-          </div>
-        </div>
-        <div class="form-group">
-          <input class="btn btn-primary" type="submit" value="Calculate">
-        </div>
-      </form>
-    </div>
 
-    <div class="col">
-      <form class="project-form" action="" method="put">
-        <h6>Result</h6>
         <div class="form-group">
-          This project need 3 cutter and 6 spreader
+          <h6>Customer Name</h6>
+          <input class="rounded-input" type="text" id="customerName" placeholder="Type in customer name">
         </div>
-      </form>
-    </div>
+
+        <div class="form-group">
+          <input class="checkbox" type="checkbox" id="saveProject" value="Save project">
+          Save Project
+          <br>
+          <small>Saved project can be reviewed and edited later on</small>
+        </div>
+        
+        <div class="form-group">
+          <button class="btn btn-primary">Clear</button>
+        </div>
+
+      </div>
+      <!--Order information-->
+      <div class="orderinfo form-group">
+        <h6>Order</h6>
+        <small>Insert below information for each order.</small>
+        
+        <div class="form-group">
+          <h6>Order ID</h6>
+          <input class="rounded-input" type="text" id="orderID" placeholder="OD1" disabled>
+        </div>
+        
+        <div class="form-group">
+          <h6>Product Style</h6>
+          <select class="rounded-select" id="productStyle">
+            <option value="TShirt">TShirt</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <h6>Customer Name</h6>
+          <input class="rounded-input" type="text" id="customerName" placeholder="Type in customer name">
+        </div>
+
+      </div>
+      <input class="btn btn-secondary" type="submit" value="Calculate">
+    </form>
   </div>
-
 </div>
 
 {% endblock %}
