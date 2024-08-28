@@ -102,8 +102,8 @@ small{
 .model-image{
     position: relative;
     width: 100%; /* Adjust the width as needed */
-    height: 0;
-    padding-bottom: 50.5%; /* This makes a 16:9 aspect ratio. Adjust as needed for other aspect ratios */
+    height: 0%;
+    padding-bottom: 100%; /* This makes a 16:9 aspect ratio. Adjust as needed for other aspect ratios */
     overflow: hidden;
     justify-content: center;
     align-items: center;

@@ -3,7 +3,8 @@ from .models import *
 # Register your models here.
 admin.site.register(User)
 admin.site.register(Customer)
-admin.site.register(Order)
+admin.site.register(Project)
 admin.site.register(Style)
+admin.site.register(Order)
 admin.site.register(Fabric)
 admin.site.register(StyleFabric)
