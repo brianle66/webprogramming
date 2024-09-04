@@ -13,6 +13,20 @@ from django.core.paginator import Paginator
 
 # Create your views here.
 
+def check_customer_name(request):
+    customer_name = request.GET.get('name', None)
+    data = {
+        'available': not Customer.objects.filter(name=customer_name).exists()
+    }
+    return JsonResponse(data)
+
+def check_project_name(request):
+    project_name = request.GET.get('name', None)
+    data = {
+        'available': not Project.objects.filter(project_name=project_name).exists()
+    }
+    return JsonResponse(data)
+
 def calculation(request):
     if request.user.is_authenticated:
         fabrics = Fabric.objects.all()

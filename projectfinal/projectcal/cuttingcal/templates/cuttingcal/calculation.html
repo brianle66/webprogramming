@@ -9,6 +9,8 @@
   <h1>Project Calculation</h1>
 {% endblock %}
 
+
+
 {%block styles%}
 {%endblock%}
 
@@ -27,11 +29,13 @@
         <div class="form-group">
           <h6>Project Name</h6>
           <input class="rounded-input" type="text" id="projectName" placeholder="Type in project name">
+          <small id="projectNameMessage"></small>
         </div>
 
         <div class="form-group">
           <h6>Customer Name</h6>
           <input class="rounded-input" type="text" id="customerName" placeholder="Type in customer name">
+          <small id="customerNameMessage"></small>
         </div>
 
         <div class="form-group">
@@ -97,9 +101,10 @@
   </div>
 </div>
 
+{% block scripts %}
+  <script src="{% static 'cuttingcal/calculations.js' %}"></script>
 {% endblock %}
 
-{% block scripts %}
-<script>
-</script>
 {% endblock %}
+
+

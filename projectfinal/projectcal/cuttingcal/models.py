@@ -8,7 +8,7 @@ class User(AbstractUser):
 class Customer(models.Model):
     name = models.CharField(max_length=255)
     def __str__(self) -> str:
-        return f'Customer: {self.name}'
+        return f'{self.name}'
 
 class Project(models.Model):
     project_name = models.CharField(max_length=255)
@@ -17,8 +17,12 @@ class Project(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self) -> str:
+        return f'{self.project_name}'
+
 class Style(models.Model):
     name = models.CharField(max_length=50, primary_key=True)
+    style_img = models.CharField(max_length=2000, blank=True)
     def __str__(self):
         return f'Style: {self.name}'
 
