@@ -3,6 +3,80 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const projectNameInput = document.getElementById('projectName');
     const projectmessageElement = document.getElementById('projectNameMessage');
+    const customerNameInput = document.getElementById('customerName');
+    const customerMessageElement = document.getElementById('customerNameMessage');
+    const saveProjectCheckbox = document.getElementById('saveProject');
+    const clearButton = document.getElementById('clearButton');
+    const orderInfoSection = document.querySelector('.orderinfo');
+
+    // Function to disable orderinfo 
+    function toggleOrderInfo() {
+        if (projectNameInput.value.trim() && customerNameInput.value.trim()) {
+            orderInfoSection.querySelectorAll('input, select').forEach(function(input) {
+                input.disabled = false;
+            });
+        } else {
+            orderInfoSection.querySelectorAll('input, select').forEach(function(input) {
+                input.disabled = true;
+            });
+        }
+    }
+
+    projectNameInput.addEventListener('input', toggleOrderInfo);
+    customerNameInput.addEventListener('input', toggleOrderInfo);
+
+    toggleOrderInfo(); // Initial check
+
+    //Create or update project
+    function createOrUpdateProject() {
+        const projectName = projectNameInput.value.trim();
+        const customerName = customerNameInput.value.trim();
+        const saveProject = saveProjectCheckbox.checked;
+
+        if (saveProject && projectName && customerName) {
+            const data = {
+                project_name: projectName,
+                customer_name: customerName
+            };
+
+            fetch('/create_or_update_project/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'created') {
+                        alert('Project and customer created successfully!');
+                    } else if (data.status === 'updated') {
+                        alert('Project updated with new order.');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    }
+
+    document.querySelector('form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        createOrUpdateProject();
+    });
+
+    // Clear button event listener
+    clearButton.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent form submission
+
+        // Clear the input fields
+        projectNameInput.value = '';
+        customerNameInput.value = '';
+
+        // Clear the validation messages
+        projectmessageElement.textContent = '';
+        customerMessageElement.textContent = '';
+        toggleOrderInfo();
+    });
 
     // Function to check project name availability
     function checkProjectName() {
@@ -26,12 +100,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Event listener for when the input loses focus
-    projectNameInput.addEventListener('blur', checkProjectName);
 
-    const customerNameInput = document.getElementById('customerName');
-    const customerMessageElement = document.getElementById('customerNameMessage');
-
+    // Fuction to check customer nam available
     function checkCustomerName() {
         const customerName = customerNameInput.value.trim();
 
@@ -53,5 +123,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    customerNameInput.addEventListener('input', checkCustomerName); // Trigger on every input change
+
+    //When input lost focus, execute the function to the availability 
+    projectNameInput.addEventListener('blur', checkProjectName); 
+    customerNameInput.addEventListener('blur', checkCustomerName);
 });

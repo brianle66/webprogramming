@@ -13,10 +13,34 @@ from django.core.paginator import Paginator
 
 # Create your views here.
 
+@csrf_exempt
+def create_or_update_project(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        project_name = data.get('project_name').strip()
+        customer_name = data.get('customer_name').strip()
+
+        customer, created_customer = Customer.objects.get_or_create(
+            name__iexact=customer_name,
+            defaults={'name': customer_name}
+        )
+
+        project, created_project = Project.objects.get_or_create(
+            project_name__iexact=project_name,
+            customer_name=customer,
+            defaults={'project_name': project_name, 'customer_name': customer}
+        )
+
+        if not created_project:
+            Order.objects.create(project=project, qty=100)  # Example: creating a new order for the project
+
+        response_status = 'created' if created_project else 'updated'
+        return JsonResponse({'status': response_status})
+
 def check_customer_name(request):
-    customer_name = request.GET.get('name', None)
+    customer_name = request.GET.get('name', None).strip().lower()
     data = {
-        'available': not Customer.objects.filter(name=customer_name).exists()
+        'available': not Customer.objects.filter(name__iexact=customer_name).exists()
     }
     return JsonResponse(data)
 
