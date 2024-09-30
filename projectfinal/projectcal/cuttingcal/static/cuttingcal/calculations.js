@@ -9,6 +9,41 @@ document.addEventListener('DOMContentLoaded', function() {
     const clearButton = document.getElementById('clearButton');
     const orderInfoSection = document.querySelector('.orderinfo');
 
+    // Function to check fabric component of the current selected Style
+    function fetchLatestOrderId() {
+        if (!projectNameInput) {
+          console.error('Element with id "projectName" not found!');
+          return;
+        }
+  
+        const projectName = projectNameInput.value.trim();
+        
+        if (!projectName) {
+          // Clear the placeholder if project name is empty
+          document.getElementById('orderID').placeholder = '';
+          console.log('Project name is empty, cannot fetch order ID.');
+          return;
+        }
+  
+        // Make the AJAX request to fetch the latest order ID
+        fetch(`/get_order_id/?name=${encodeURIComponent(projectName)}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.latest_order_id) {
+            // Set the orderID input's placeholder to the fetched order ID
+            document.getElementById('orderID').placeholder = data.latest_order_id;
+            } else if (data.error) {
+            alert(data.error);  // Handle the error returned from the server
+            document.getElementById('orderID').placeholder = 'N/A';  // Reset placeholder in case of error
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching the latest order ID:', error);
+            document.getElementById('orderID').placeholder = 'N/A';  // Reset placeholder on failure
+        });
+      }
+    
+
     // Function to disable orderinfo 
     function toggleOrderInfo() {
         if (projectNameInput.value.trim() && customerNameInput.value.trim()) {
@@ -22,6 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    //Check everytime input changing and update the block status by using toggleOrderInfo
     projectNameInput.addEventListener('input', toggleOrderInfo);
     customerNameInput.addEventListener('input', toggleOrderInfo);
 
@@ -71,10 +107,14 @@ document.addEventListener('DOMContentLoaded', function() {
         // Clear the input fields
         projectNameInput.value = '';
         customerNameInput.value = '';
-
+        
         // Clear the validation messages
         projectmessageElement.textContent = '';
         customerMessageElement.textContent = '';
+
+        // Clear save checkbox
+        saveProjectCheckbox.checked = false;
+
         toggleOrderInfo();
     });
 
@@ -125,6 +165,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     //When input lost focus, execute the function to the availability 
-    projectNameInput.addEventListener('blur', checkProjectName); 
+    projectNameInput.addEventListener('blur', checkProjectName);
+    projectNameInput.addEventListener('blur', fetchLatestOrderId);
     customerNameInput.addEventListener('blur', checkCustomerName);
 });

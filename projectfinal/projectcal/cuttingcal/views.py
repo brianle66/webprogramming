@@ -10,10 +10,41 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from .models import *
 from django.core.paginator import Paginator
-
+import logging
 # Create your views here.
+logger = logging.getLogger(__name__)
 
 @csrf_exempt
+
+def get_order_id(request):
+    project_name = request.GET.get('name', None)
+
+    if project_name:
+        try:
+            # Fetch the latest order by 'id'
+            latest_order = Project.objects.filter(project_name__iexact=project_name).latest('id')
+            latest_order_id = latest_order.id
+            if latest_order_id > 1:
+                latest_order_id += 1
+        except Project.DoesNotExist:
+            # If no project is found, return 0
+            latest_order_id = '1'
+        except Exception as e:
+            # Log the error for debugging
+            logger.error(f"Error fetching order ID for project '{project_name}': {e}")
+            return JsonResponse({'error': 'Internal server error occurred'}, status=500)
+    else:
+        # If no project name is provided, return an error
+        return JsonResponse({'error': 'Project name is required'}, status=400)
+
+    # Return the latest order ID or 0 if not found
+    return JsonResponse({'latest_order_id': latest_order_id})
+
+def check_style_fabric_comp(request):
+    style_name = request.GET.get('name', None).strip().lower()
+    fabric_comp = StyleFabric.objects.get(style=style_name)
+    return JsonResponse({'fabric_comp': fabric_comp})
+
 def create_or_update_project(request):
     if request.method == 'POST':
         data = json.loads(request.body)

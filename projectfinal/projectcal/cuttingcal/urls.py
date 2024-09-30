@@ -16,4 +16,6 @@ urlpatterns = [
     path('check_project_name/', views.check_project_name, name='check_project_name'),
     path('check_customer_name/', views.check_customer_name, name='check_customer_name'),
     path('create_or_update_project/', views.create_or_update_project, name='create_or_update_project'),
+    path('check_style_fabric_comp/', views.check_style_fabric_comp, name='check_style_fabric_comp'),
+    path('get_order_id/', views.get_order_id, name='get_order_id'),
 ]
