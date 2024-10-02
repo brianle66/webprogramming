@@ -22,13 +22,17 @@ def get_order_id(request):
     if project_name:
         try:
             # Fetch the latest order by 'id'
-            latest_order = Project.objects.filter(project_name__iexact=project_name).latest('id')
-            latest_order_id = latest_order.id
-            if latest_order_id > 1:
-                latest_order_id += 1
-        except Project.DoesNotExist:
+            project = Project.objects.get(project_name__iexact=project_name)
+
+            # Fetch the latest order associated with the project
+            latest_order = Order.objects.filter(project=project).latest('id')
+            
+            # Return the latest order id
+            latest_order_id = latest_order.id + 1
+
+        except (Project.DoesNotExist, Order.DoesNotExist):
             # If no project is found, return 0
-            latest_order_id = '1'
+            latest_order_id = 1
         except Exception as e:
             # Log the error for debugging
             logger.error(f"Error fetching order ID for project '{project_name}': {e}")
