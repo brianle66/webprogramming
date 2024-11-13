@@ -16,6 +16,17 @@ logger = logging.getLogger(__name__)
 
 @csrf_exempt
 
+def get_style_img(request):
+    style_name = request.GET.get('name', None)
+    style = Style.objects.filter(name=style_name).first()  # Use filter().first() to avoid exceptions if not found
+
+    if style:
+        style_img = style.style_img  # Make sure this field has the correct URL
+    else:
+        style_img = 'https://mike-robbins.com/wp-content/uploads/2010/03/3-17-10-blog.jpg'  # Return an empty string if the style does not exist
+
+    return JsonResponse({'style_img': style_img})
+
 def get_order_id(request):
     project_name = request.GET.get('name', None)
 

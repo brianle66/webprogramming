@@ -18,4 +18,5 @@ urlpatterns = [
     path('create_or_update_project/', views.create_or_update_project, name='create_or_update_project'),
     path('check_style_fabric_comp/', views.check_style_fabric_comp, name='check_style_fabric_comp'),
     path('get_order_id/', views.get_order_id, name='get_order_id'),
+    path('get_style_img/', views.get_style_img, name='get_style_img'),
 ]

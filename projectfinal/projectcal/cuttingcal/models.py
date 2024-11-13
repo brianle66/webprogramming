@@ -24,7 +24,7 @@ class Style(models.Model):
     name = models.CharField(max_length=50, primary_key=True)
     style_img = models.CharField(max_length=2000, blank=True)
     def __str__(self):
-        return f'Style: {self.name}'
+        return f'{self.name}'
 
 class Order(models.Model):
     style = models.ForeignKey(Style, on_delete=models.CASCADE, related_name='orders')

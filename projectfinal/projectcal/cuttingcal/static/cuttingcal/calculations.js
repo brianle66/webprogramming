@@ -8,8 +8,21 @@ document.addEventListener('DOMContentLoaded', function() {
     const saveProjectCheckbox = document.getElementById('saveProject');
     const clearButton = document.getElementById('clearButton');
     const orderInfoSection = document.querySelector('.orderinfo');
+    const productStyleInput = document.getElementById('productStyle');
+    const styleImageElement = document.getElementById('styleImage');
 
-    // Function to check fabric component of the current selected Style
+    // Function to get style img
+    function fetchstyleImage() {
+        const styleName = productStyleInput.value;
+        fetch(`/get_style_img/?name=${encodeURIComponent(styleName)}`)
+            .then(response => response.json())
+            .then(data => {
+                styleImageElement.src = data.style_img;
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    // Function to check latest order ID of selected Project
     function fetchLatestOrderId() {
         if (!projectNameInput) {
           console.error('Element with id "projectName" not found!');
@@ -30,11 +43,11 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             if (data.latest_order_id) {
-            // Set the orderID input's placeholder to the fetched order ID
-            document.getElementById('orderID').placeholder = data.latest_order_id;
+                // Set the orderID input's placeholder to the fetched order ID
+                document.getElementById('orderID').placeholder = data.latest_order_id;
             } else if (data.error) {
-            alert(data.error);  // Handle the error returned from the server
-            document.getElementById('orderID').placeholder = 'N/A';  // Reset placeholder in case of error
+                alert(data.error);  // Handle the error returned from the server
+                document.getElementById('orderID').placeholder = 'N/A';  // Reset placeholder in case of error
             }
         })
         .catch(error => {
@@ -50,6 +63,9 @@ document.addEventListener('DOMContentLoaded', function() {
             orderInfoSection.querySelectorAll('input, select').forEach(function(input) {
                 input.disabled = false;
             });
+            // Keep orderID as disabled
+            document.getElementById('orderID').disabled = true;
+
         } else {
             orderInfoSection.querySelectorAll('input, select').forEach(function(input) {
                 input.disabled = true;
@@ -168,4 +184,5 @@ document.addEventListener('DOMContentLoaded', function() {
     projectNameInput.addEventListener('blur', checkProjectName);
     projectNameInput.addEventListener('blur', fetchLatestOrderId);
     customerNameInput.addEventListener('blur', checkCustomerName);
+    productStyleInput.addEventListener('change', fetchstyleImage);
 });
