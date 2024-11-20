@@ -16,9 +16,32 @@ logger = logging.getLogger(__name__)
 
 @csrf_exempt
 
+def get_style_fabrics(request):
+    style_name = request.GET.get('name', None)
+    style = Style.objects.filter(name=style_name).first()
+
+    if style:
+        style_fabrics = style.style_fabrics.all()  # Retrieve all related StyleFabric objects
+        fabrics = [
+            {
+                'material_comp': sf.material_comp,
+                'material_name': sf.material.name,
+            }
+            for sf in style_fabrics
+        ]
+        return JsonResponse({'fabrics': fabrics})
+    else:
+        return JsonResponse({'error': 'Style not found'}, status=404)
+
+
+def get_style_name(request):
+    style_names = list(Style.objects.values_list('name', flat=True))
+    return JsonResponse({'style_names': style_names})
+
 def get_style_img(request):
     style_name = request.GET.get('name', None)
     style = Style.objects.filter(name=style_name).first()  # Use filter().first() to avoid exceptions if not found
+    styleFabrics = style.style_fabrics
 
     if style:
         style_img = style.style_img  # Make sure this field has the correct URL

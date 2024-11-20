@@ -10,8 +10,68 @@ document.addEventListener('DOMContentLoaded', function() {
     const orderInfoSection = document.querySelector('.orderinfo');
     const productStyleInput = document.getElementById('productStyle');
     const styleImageElement = document.getElementById('styleImage');
+    fetchStyleName()
 
-    // Function to get style img
+
+    // Function to get style Fabrics component
+    function fetchStyleFabrics() {
+        const styleName = document.getElementById('productStyle').value;
+        const fabricComps = document.getElementById('fabricComps')
+        if (styleName) {
+            fetch(`/get_style_fabrics/?name=${encodeURIComponent(styleName)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.fabrics) {
+                        const fabricContainer = document.querySelector('.row.w-100.align-items-left');
+                        fabricContainer.innerHTML = ''; // Clear existing checkboxes
+    
+                        data.fabrics.forEach(fabric => {
+                            const colDiv = document.createElement('div');
+                            colDiv.classList.add('col');
+    
+                            const checkbox = document.createElement('input');
+                            checkbox.type = 'checkbox';
+                            checkbox.classList.add('checkbox');
+                            checkbox.value = fabric.material_comp;
+                            checkbox.id = `fabric_${fabric.material_comp}`;
+    
+                            const label = document.createElement('label');
+                            label.setAttribute('for', `fabric_${fabric.material_comp}`);
+                            label.textContent = fabric.material_comp;
+    
+                            colDiv.appendChild(checkbox);
+                            colDiv.appendChild(label);
+    
+                            fabricContainer.appendChild(colDiv);
+                        });
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        if (!styleName) {
+            fabricComps.innerHTML = ''
+        }
+    }
+
+    // Function to get style name
+    function fetchStyleName() {
+        fetch('/get_style_name/')
+            .then(response => response.json())
+            .then(data => {
+                const productStyleSelect = document.getElementById('productStyle');
+                productStyleSelect.innerHTML = '<option value="">Choose a style</option>'; // Clear previous options
+                data.style_names.forEach(styleName => {
+                    const option = document.createElement('option');
+                    option.value = styleName;
+                    option.textContent = styleName;
+                    productStyleSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    // Function to get style img and fabric component
     function fetchstyleImage() {
         const styleName = productStyleInput.value;
         fetch(`/get_style_img/?name=${encodeURIComponent(styleName)}`)
@@ -181,8 +241,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     //When input lost focus, execute the function to the availability 
-    projectNameInput.addEventListener('blur', checkProjectName);
-    projectNameInput.addEventListener('blur', fetchLatestOrderId);
+    projectNameInput.addEventListener('blur', function () {
+        checkProjectName();
+        fetchLatestOrderId();
+    });
     customerNameInput.addEventListener('blur', checkCustomerName);
-    productStyleInput.addEventListener('change', fetchstyleImage);
+    productStyleInput.addEventListener('change', function () {
+        fetchstyleImage();
+        fetchStyleFabrics();
+    });
+    
 });

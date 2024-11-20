@@ -19,4 +19,6 @@ urlpatterns = [
     path('check_style_fabric_comp/', views.check_style_fabric_comp, name='check_style_fabric_comp'),
     path('get_order_id/', views.get_order_id, name='get_order_id'),
     path('get_style_img/', views.get_style_img, name='get_style_img'),
+    path('get_style_name/', views.get_style_name, name='get_style_name'),
+    path('get_style_fabrics/', views.get_style_fabrics, name='get_style_fabrics'),
 ]
